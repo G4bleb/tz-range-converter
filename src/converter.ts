@@ -7,7 +7,7 @@ const timeFormat = new Intl.DateTimeFormat("fr-FR", {
   timeStyle: "short",
 });
 
-function parseTime(toParse: string, tz: string) {
+function parseTime(toParse: string, tz: string): moment.Moment {
   if (toParse.toLowerCase().includes("m")) {
     return moment.tz(toParse, "hha", tz);
   } else {
