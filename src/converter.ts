@@ -1,6 +1,7 @@
 import moment from "moment-timezone";
+import { links } from "./links";
 
-moment.tz.link(["PT|America/Los_Angeles", "ET|America/New_York"]);
+moment.tz.link(links);
 
 const timeFormat = new Intl.DateTimeFormat("fr-FR", {
   timeStyle: "short",
