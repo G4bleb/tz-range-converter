@@ -3,7 +3,7 @@ import { links } from "./links";
 
 moment.tz.link(links);
 
-const timeFormat = new Intl.DateTimeFormat("fr-FR", {
+const timeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 
