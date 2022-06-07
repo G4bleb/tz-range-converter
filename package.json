@@ -6,8 +6,10 @@
   "author": "Gableb <gabriel.lebis@free.fr>",
   "license": "MIT",
   "scripts": {
-    "build": "rimraf build && tsc",
-    "dev": "tsc --incremental && node build/converter.js"
+    "clean": "rimraf build",
+    "build": "yarn clean && tsc",
+    "dev": "tsc --incremental && node build/converter.js",
+    "lint": "eslint ./src"
   },
   "dependencies": {
     "moment-timezone": "^0.5.34"
