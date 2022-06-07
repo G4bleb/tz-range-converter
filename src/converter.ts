@@ -1,5 +1,5 @@
 import moment from "moment-timezone";
-import { links } from "./links";
+import links from "./assets/links.json";
 
 moment.tz.link(links);
 
