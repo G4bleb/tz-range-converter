@@ -2,6 +2,11 @@
 
 Convert a time range from a timezone to local time
 
+## Requirements
+
+- Node 16
+- yarn
+
 ## Installation
 
 Install dependencies
