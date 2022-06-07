@@ -4,8 +4,8 @@ Convert a time range from a timezone to local time
 
 ## Requirements
 
-- Node 16
-- yarn
+- [Node](https://nodejs.org/) (tested with v16.5.0)
+- [Yarn Classic](https://classic.yarnpkg.com/)
 
 ## Installation
 
