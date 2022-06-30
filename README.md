@@ -24,7 +24,7 @@ $ node build/converter.js 11pm-4am ET
 
 ## Development
 
-In a dev context, run the converter with `yarn dev` :
+Run the converter in a dev context with `yarn dev` :
 
 ```
 $ yarn dev 11pm 4am Asia/Tokyo
