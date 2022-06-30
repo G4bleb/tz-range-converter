@@ -8,7 +8,7 @@
   "scripts": {
     "clean": "rimraf build",
     "build": "yarn clean && tsc",
-    "dev": "tsc --incremental && node build/converter.js",
+    "dev": "tsc --incremental && node --inspect build/converter.js",
     "lint": "eslint ./src"
   },
   "dependencies": {
