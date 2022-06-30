@@ -15,10 +15,20 @@ Install dependencies
 $ yarn
 ```
 
-Run the converter with `yarn dev` :
+Build & run the converter
 
 ```
-$ yarn dev 11pm-4am ET
-$ yarn dev 23:00-04:00 ET
+$ yarn build
+$ node build/converter.js 11pm-4am ET
+```
+
+## Development
+
+In a dev context, run the converter with `yarn dev` :
+
+```
+$ yarn dev 11pm 4am Asia/Tokyo
+$ yarn dev 23:00-04:00 Europe/Berlin
 $ yarn dev 23-4 ET
+$ yarn dev 11:45pm 4:15am US/Alaska
 ```
