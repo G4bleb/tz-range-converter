@@ -18,7 +18,7 @@ interface TimestampRange {
   end: Timestamp;
 }
 
-const timeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{1,2})?/g;
+const timeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{1,2})?(am|pm)?/g;
 
 /**
  * TODO
