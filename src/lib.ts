@@ -3,13 +3,13 @@ import links from "./assets/links.json";
 
 moment.tz.link(links);
 
-const timeFormat = new Intl.DateTimeFormat(undefined, {
+const defaultTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 
 interface Timestamp {
   hour: string;
-  meridiem: string;
+  meridiem?: string; // am/pm
   minutes: string;
 }
 
@@ -18,15 +18,15 @@ interface TimestampRange {
   end: Timestamp;
 }
 
-const timeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{2})?(am|pm)?/g;
+const timeRangeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{2})?(am|pm)?/g;
 
 /**
- * TODO
- * @param toParse
- * @returns
+ * Parse a string containing two times. Handles various syntax.
+ * @param toParse time range to parse
+ * @returns An object containing the start and end times' features
  */
 function parseTimeRange(toParse: string): TimestampRange {
-  const parsed = [...toParse.matchAll(timeRegex)];
+  const parsed = [...toParse.matchAll(timeRangeRegex)];
   return {
     start: {
       hour: parsed[0][1],
@@ -42,10 +42,10 @@ function parseTimeRange(toParse: string): TimestampRange {
 }
 
 /**
- * TODO
- * @param ts
- * @param tz
- * @returns
+ * Convert a Timestamp object to a moment-timezone object
+ * @param ts Timestamp to convert
+ * @param tz Timezone of the timestamp
+ * @returns The moment-timezone object
  */
 function timeStampToMoment(ts: Timestamp, tz: string): moment.Moment {
   if (ts.meridiem) {
@@ -65,7 +65,7 @@ function timeStampToMoment(ts: Timestamp, tz: string): moment.Moment {
 export function convert(
   rangeToParse: string,
   tz: string,
-  outputFormat = timeFormat
+  outputFormat = defaultTimeFormat
 ): string {
   const range = parseTimeRange(rangeToParse);
 
