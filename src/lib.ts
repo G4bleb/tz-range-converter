@@ -7,36 +7,70 @@ const timeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
 });
 
+interface Timestamp {
+  hour: string;
+  meridiem: string;
+  minutes: string;
+}
+
+interface TimestampRange {
+  start: Timestamp;
+  end: Timestamp;
+}
+
+const timeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{1,2})?/g;
+
 /**
- * Parse a time (start or end of a range)
- * @param toParse time to parse
- * @param tz timezone of the parsed time
- * @returns A moment.tz object of the time
+ * TODO
+ * @param toParse
+ * @returns
  */
-function parseTime(toParse: string, tz: string): moment.Moment {
-  if (toParse.toLowerCase().includes("m")) {
-    return moment.tz(toParse, "hha", tz);
+function parseTimeRange(toParse: string): TimestampRange {
+  const parsed = [...toParse.matchAll(timeRegex)];
+  return {
+    start: {
+      hour: parsed[0][1],
+      meridiem: parsed[0][2] ?? parsed[0][4],
+      minutes: parsed[0][3],
+    },
+    end: {
+      hour: parsed[1][1],
+      meridiem: parsed[1][2] ?? parsed[1][4],
+      minutes: parsed[1][3],
+    },
+  };
+}
+
+/**
+ * TODO
+ * @param ts
+ * @param tz
+ * @returns
+ */
+function timeStampToMoment(ts: Timestamp, tz: string): moment.Moment {
+  if (ts.meridiem) {
+    return moment.tz(`${ts.hour}:${ts.minutes}${ts.meridiem}`, "hh:mma", tz);
   } else {
-    return moment.tz(toParse, "HH:mm", tz);
+    return moment.tz(`${ts.hour}:${ts.minutes}`, "HH:mm", tz);
   }
 }
 
 /**
  * Conversion function
- * @param range Timerange to parse, separated by a dash -
+ * @param rangeToParse Time range to parse
  * @param tz Timezone of given timerange, either a tz database name or an alias, set by the links.json file.
  * @param outputFormat DateTimeFormat of the output string. default is local format w/ short timeStyle
  * @returns The time range converted to the local time zone
  */
 export function convert(
-  range: string,
+  rangeToParse: string,
   tz: string,
   outputFormat = timeFormat
 ): string {
-  const [startStr, endStr] = range.split("-");
-  // Example: 11pm-4am ET
-  const startDate = parseTime(startStr, tz);
-  const endDate = parseTime(endStr, tz);
+  const range = parseTimeRange(rangeToParse);
+
+  const startDate = timeStampToMoment(range.start, tz);
+  const endDate = timeStampToMoment(range.end, tz);
 
   const formattedStart = outputFormat.format(startDate.toDate());
   const formattedEnd = outputFormat.format(endDate.toDate());

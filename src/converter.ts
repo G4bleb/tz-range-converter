@@ -1,9 +1,5 @@
 import { convert } from "./lib";
 
-if (process.argv.length !== 4) {
-  console.error("Error : wrong number of arguments");
-  process.exit(1);
-}
-
-const [range, tz] = process.argv.splice(2);
-console.log(convert(range, tz));
+const args = process.argv.splice(2);
+const tz = args.pop() as string;
+console.log(convert(args.join(" "), tz));
