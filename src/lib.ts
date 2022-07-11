@@ -33,7 +33,7 @@ function parseTimeRange(toParse: string): TimestampRange {
       meridiem: parsed[0][2] ?? parsed[0][4],
       minutes: parsed[0][3],
     },
-    end: {
+    end: parsed[1] && {
       hour: parsed[1][1],
       meridiem: parsed[1][2] ?? parsed[1][4],
       minutes: parsed[1][3],
@@ -70,11 +70,17 @@ export function convert(
   const range = parseTimeRange(rangeToParse);
 
   const startDate = timeStampToMoment(range.start, tz);
-  const endDate = timeStampToMoment(range.end, tz);
-
   const formattedStart = outputFormat.format(startDate.toDate());
-  const formattedEnd = outputFormat.format(endDate.toDate());
 
-  const localRange = `${formattedStart} - ${formattedEnd} local time`;
+  let localRange = formattedStart;
+
+  if (range.end) {
+    const endDate = timeStampToMoment(range.end, tz);
+    const formattedEnd = outputFormat.format(endDate.toDate());
+    localRange += " - " + formattedEnd;
+  }
+
+  localRange += " local time";
+
   return localRange;
 }
