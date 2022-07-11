@@ -26,7 +26,7 @@ const timeRangeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{2})?(am|pm)?/g;
  * @returns An object containing the start and end times' features
  */
 function parseTimeRange(toParse: string): TimestampRange {
-  const parsed = [...toParse.matchAll(timeRangeRegex)];
+  const parsed = [...toParse.toLowerCase().matchAll(timeRangeRegex)];
   return {
     start: {
       hour: parsed[0][1],
