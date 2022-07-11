@@ -1,6 +1,6 @@
 {
   "name": "tz-range-converter",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "Convert a time range from a timezone to another",
   "repository": "https://github.com/G4bleb/tz-range-converter",
   "author": "Gableb <gabriel.lebis@free.fr>",
