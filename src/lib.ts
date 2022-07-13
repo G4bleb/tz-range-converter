@@ -21,7 +21,7 @@ interface TimestampRange {
 const timeRangeRegex = /(\d{1,2})[:h]?(am|pm)?(\d{2})?(am|pm)?/g;
 
 /**
- * Parse a string containing two times. Handles various syntax.
+ * Parse a string containing one or two times. Handles various syntaxes.
  * @param toParse time range to parse
  * @returns An object containing the start and end times' features
  */
