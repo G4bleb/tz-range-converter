@@ -17,11 +17,14 @@ jobs:
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - name: Yarn install
-        run: yarn install
+        run: yarn install --production
       - name: Yarn build
         run: yarn build
       - name: Archive build artifact
         uses: actions/upload-artifact@v3.1.0
         with:
           name: build
-          path: build
+          path: |
+            build
+            node_modules
+            package.json
