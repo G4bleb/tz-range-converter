@@ -13,7 +13,8 @@
     "lint": "eslint ./src"
   },
   "dependencies": {
-    "moment-timezone": "^0.5.34"
+    "date-fns": "^2.29.1",
+    "date-fns-tz": "^1.3.6"
   },
   "devDependencies": {
     "@types/node": "^16.11.33",
