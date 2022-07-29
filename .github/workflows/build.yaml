@@ -23,7 +23,7 @@ jobs:
       - name: Archive build artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: build
+          name: build.zip
           path: |
             build
             node_modules
