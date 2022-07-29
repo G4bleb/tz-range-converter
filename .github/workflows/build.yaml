@@ -24,8 +24,6 @@ jobs:
         run: |
           rm -rf node_modules
           yarn install --production=true --frozen-lockfile
-      - name: Yarn build
-        run: yarn build
       - name: Archive build artifact
         uses: actions/upload-artifact@v3.1.0
         with:
