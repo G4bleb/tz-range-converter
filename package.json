@@ -8,6 +8,7 @@
   "scripts": {
     "clean": "rimraf build",
     "build": "yarn clean && tsc",
+    "postbuild": "rimraf build/**/*.map",
     "dev": "tsc --incremental && node --inspect build/converter.js",
     "lint": "eslint ./src"
   },
