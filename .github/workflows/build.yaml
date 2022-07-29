@@ -16,10 +16,14 @@ jobs:
       - uses: actions/setup-node@v3.4.1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
-      - name: Yarn install
-        run: yarn install --production
+      - name: Yarn install dependencies for build
+        run: yarn install
       - name: Yarn build
         run: yarn build
+      - name: Yarn install production dependencies
+        run: |
+          rm -rf node_modules
+          yarn install --production=true --frozen-lockfile
       - name: Archive build artifact
         uses: actions/upload-artifact@v3.1.0
         with:
