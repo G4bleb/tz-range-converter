@@ -6,9 +6,9 @@
   "author": "Gableb <gabriel.lebis@free.fr>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf build",
+    "clean": "rm -rf build",
     "build": "yarn clean && tsc",
-    "postbuild": "rimraf build/**/*.map",
+    "postbuild": "rm -rf build/**.map",
     "dev": "tsc --incremental && node --inspect build/converter.js",
     "lint": "eslint ./src"
   },
@@ -21,7 +21,6 @@
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "eslint": "^8.14.0",
-    "rimraf": "^3.0.2",
     "typescript": "^4.6.4"
   }
 }
