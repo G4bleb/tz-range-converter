@@ -1,7 +1,6 @@
-import moment from "moment-timezone";
-import links from "./assets/links.json";
-
-moment.tz.link(links);
+import { parse } from "date-fns";
+import { zonedTimeToUtc } from "date-fns-tz";
+import aliases from "./assets/aliases.json";
 
 const defaultTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
@@ -31,34 +30,40 @@ function parseTimeRange(toParse: string): TimestampRange {
     start: {
       hour: parsed[0][1],
       meridiem: parsed[0][2] ?? parsed[0][4],
-      minutes: parsed[0][3],
+      minutes: parsed[0][3] ?? "0",
     },
     end: parsed[1] && {
       hour: parsed[1][1],
       meridiem: parsed[1][2] ?? parsed[1][4],
-      minutes: parsed[1][3],
+      minutes: parsed[1][3] ?? "0",
     },
   };
 }
 
 /**
- * Convert a Timestamp object to a moment-timezone object
+ * Convert a Timestamp object to a Date
  * @param ts Timestamp to convert
  * @param tz Timezone of the timestamp
- * @returns The moment-timezone object
+ * @returns The Date
  */
-function timeStampToMoment(ts: Timestamp, tz: string): moment.Moment {
+function timeStampToDate(ts: Timestamp, tz: string): Date {
+  let date: Date;
   if (ts.meridiem) {
-    return moment.tz(`${ts.hour}:${ts.minutes}${ts.meridiem}`, "hh:mma", tz);
+    date = parse(
+      `${ts.hour}:${ts.minutes}${ts.meridiem}`,
+      "hh:mma",
+      new Date()
+    );
   } else {
-    return moment.tz(`${ts.hour}:${ts.minutes}`, "HH:mm", tz);
+    date = parse(`${ts.hour}:${ts.minutes}`, "HH:mm", new Date());
   }
+  return zonedTimeToUtc(date, tz);
 }
 
 /**
  * Conversion function
  * @param rangeToParse Time range to parse
- * @param tz Timezone of given timerange, either a tz database name or an alias, set by the links.json file.
+ * @param tz Timezone of given timerange, either a tz database name or an alias, set by the aliases.json file.
  * @param outputFormat DateTimeFormat of the output string. default is local format w/ short timeStyle
  * @returns The time range converted to the local time zone
  */
@@ -67,16 +72,20 @@ export function convert(
   tz: string,
   outputFormat = defaultTimeFormat
 ): string {
+  if (tz in aliases) {
+    tz = aliases[tz as keyof typeof aliases];
+  }
+
   const range = parseTimeRange(rangeToParse);
 
-  const startDate = timeStampToMoment(range.start, tz);
-  const formattedStart = outputFormat.format(startDate.toDate());
+  const startDate = timeStampToDate(range.start, tz);
+  const formattedStart = outputFormat.format(startDate);
 
   let localRange = formattedStart;
 
   if (range.end) {
-    const endDate = timeStampToMoment(range.end, tz);
-    const formattedEnd = outputFormat.format(endDate.toDate());
+    const endDate = timeStampToDate(range.end, tz);
+    const formattedEnd = outputFormat.format(endDate);
     localRange += " - " + formattedEnd;
   }
 
