@@ -21,7 +21,7 @@ jobs:
       - name: Yarn build
         run: yarn build
       - name: Archive build
-        run: zip -r build.zip build
+        run: zip -r release.zip dist
       - name: Release
         uses: marvinpinto/action-automatic-releases@v1.2.1
         with:
@@ -29,4 +29,4 @@ jobs:
           automatic_release_tag: latest
           prerelease: true
           title: Development Build
-          files: build.zip
+          files: release.zip

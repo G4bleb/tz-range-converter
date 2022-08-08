@@ -6,10 +6,9 @@
   "author": "Gableb <gabriel.lebis@free.fr>",
   "license": "MIT",
   "scripts": {
-    "clean": "rimraf build",
-    "build": "yarn clean && tsc && cp -r src/assets build/assets && rollup --config",
-    "postbuild": "rimraf build/**.map",
-    "dev": "tsc --incremental && node --inspect build/converter.js",
+    "clean": "rimraf build dist",
+    "build": "yarn clean && rollup --config",
+    "dev": "rollup --config && node --inspect dist/converter.js",
     "lint": "eslint ./src"
   },
   "dependencies": {
@@ -19,6 +18,7 @@
   "devDependencies": {
     "@rollup/plugin-commonjs": "^22.0.1",
     "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-typescript": "^8.3.4",
     "@types/node": "^16.11.33",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
