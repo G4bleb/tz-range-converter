@@ -1,8 +1,16 @@
 import { parse } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
 import { readFileSync } from "fs";
+import { join } from "path";
 
-const aliases = JSON.parse(readFileSync("./assets/aliases.json").toString());
+let aliases = {};
+try {
+  aliases = JSON.parse(
+    readFileSync(join(__dirname, "assets", "aliases.json")).toString()
+  );
+} catch (e) {
+  console.error("Could not read aliases file", e);
+}
 
 const defaultTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
