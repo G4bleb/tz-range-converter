@@ -1,16 +1,5 @@
 import { parse } from "date-fns";
 import { zonedTimeToUtc } from "date-fns-tz";
-import { readFileSync } from "fs";
-import { join } from "path";
-
-let aliases = {};
-try {
-  aliases = JSON.parse(
-    readFileSync(join(__dirname, "assets", "aliases.json")).toString()
-  );
-} catch (e) {
-  console.error("Could not read aliases file", e);
-}
 
 const defaultTimeFormat = new Intl.DateTimeFormat(undefined, {
   timeStyle: "short",
@@ -70,36 +59,48 @@ function timeStampToDate(ts: Timestamp, tz: string): Date {
   return zonedTimeToUtc(date, tz);
 }
 
-/**
- * Conversion function
- * @param rangeToParse Time range to parse
- * @param tz Timezone of given timerange, either a tz database name or an alias, set by the aliases.json file.
- * @param outputFormat DateTimeFormat of the output string. default is local format w/ short timeStyle
- * @returns The time range converted to the local time zone
- */
-export function convert(
-  rangeToParse: string,
-  tz: string,
-  outputFormat = defaultTimeFormat
-): string {
-  if (tz in aliases) {
-    tz = aliases[tz as keyof typeof aliases];
+export class TZRangeConverter {
+  private aliases: Record<string, string>;
+
+  /**
+   * Converter class
+   * @param aliases Object containing key-value pairs of aliases for tz database timezones
+   */
+  constructor(aliases?: Record<string, string>) {
+    this.aliases = aliases ?? {};
   }
 
-  const range = parseTimeRange(rangeToParse);
+  /**
+   * Conversion function
+   * @param rangeToParse Time range to parse
+   * @param tz Timezone of given timerange, either a tz database name or an alias, set by the aliases.json file.
+   * @param outputFormat DateTimeFormat of the output string. default is local format w/ short timeStyle
+   * @returns The time range converted to the local time zone
+   */
+  public convert(
+    rangeToParse: string,
+    tz: string,
+    outputFormat = defaultTimeFormat
+  ): string {
+    if (tz in this.aliases) {
+      tz = this.aliases[tz as keyof typeof this.aliases];
+    }
 
-  const startDate = timeStampToDate(range.start, tz);
-  const formattedStart = outputFormat.format(startDate);
+    const range = parseTimeRange(rangeToParse);
 
-  let localRange = formattedStart;
+    const startDate = timeStampToDate(range.start, tz);
+    const formattedStart = outputFormat.format(startDate);
 
-  if (range.end) {
-    const endDate = timeStampToDate(range.end, tz);
-    const formattedEnd = outputFormat.format(endDate);
-    localRange += " - " + formattedEnd;
+    let localRange = formattedStart;
+
+    if (range.end) {
+      const endDate = timeStampToDate(range.end, tz);
+      const formattedEnd = outputFormat.format(endDate);
+      localRange += " - " + formattedEnd;
+    }
+
+    localRange += " local time";
+
+    return localRange;
   }
-
-  localRange += " local time";
-
-  return localRange;
 }
