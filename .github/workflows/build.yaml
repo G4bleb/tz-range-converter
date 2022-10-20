@@ -9,11 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3.0.2
+      - uses: actions/checkout@v3.1.0
       - name: Read .nvmrc
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_STATE
         id: nvm
-      - uses: actions/setup-node@v3.4.1
+      - uses: actions/setup-node@v3.5.1
         with:
           node-version: "${{ steps.nvm.outputs.NVMRC }}"
       - name: Yarn install
