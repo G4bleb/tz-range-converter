@@ -3,6 +3,8 @@ import { TZRangeConverter } from "./lib";
 const aliases = {
   PT: "America/Los_Angeles",
   ET: "America/New_York",
+  EST: "America/New_York",
+  EDT: "America/New_York",
   IST: "Asia/Calcutta",
 };
 
