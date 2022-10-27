@@ -89,6 +89,11 @@ export class TZRangeConverter {
     const range = parseTimeRange(rangeToParse);
 
     const startDate = timeStampToDate(range.start, tz);
+    if (isNaN(startDate.getTime())) {
+      throw new Error(
+        "Error creating Date object. Timezone is probably unknown."
+      );
+    }
     const formattedStart = outputFormat.format(startDate);
 
     let localRange = formattedStart;

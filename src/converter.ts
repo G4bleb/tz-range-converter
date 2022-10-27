@@ -18,4 +18,9 @@ if (args.length < 2) {
 const tz = args.pop() as string;
 const converter = new TZRangeConverter(aliases);
 
-console.log(converter.convert(args.join(" "), tz));
+try {
+  console.log(converter.convert(args.join(" "), tz));
+} catch (error) {
+  console.error(error);
+  process.exit(1);
+}
